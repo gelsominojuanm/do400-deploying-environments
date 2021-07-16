@@ -4,6 +4,11 @@ pipeline {
             label 'maven'
         }
     }
+    environment {
+        RHT_OCP4_DEV_USER = 'jdrdnx'
+        DEPLOYMENT_CONFIG_STAGE = 'shopping-cart-stage'
+        DEPLOYMENT_CONFIG_PRODUCTION = 'shopping-cart-production'
+    }
     stages {
         stage('Tests') {
             steps {
@@ -32,6 +37,14 @@ pipeline {
     		}	
 	}
 
+	stage('Deploy - Stage') {
+    		environment {
+        		APP_NAMESPACE = "${RHT_OCP4_DEV_USER}-shopping-cart-stage"
+    		}	
+    		steps {
+        		sh "oc rollout latest dc/${DEPLOYMENT_CONFIG_STAGE} -n ${APP_NAMESPACE}"
+    		}
+	}
 
     }
 }
