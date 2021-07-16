@@ -24,6 +24,12 @@ objects:
               imagePullPolicy: Always
               ports:
                 - containerPort: 8080
+              limits:
+                cpu: 500m
+                memory: 1G
+              request:
+                cpu: 200m
+                memory: 0.5G
       strategy:
         type: Rolling
   - kind: Service
